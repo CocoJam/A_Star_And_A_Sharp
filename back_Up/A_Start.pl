@@ -22,9 +22,9 @@ yx(Y,Size,Sum):- ((mod(Y+1,Size) =:= 0)) -> yxx(Y,Size,Sum); Sum is ((div(Y+1,Si
 yxx(Y,Size,Sum) :- (div(Y+1,Size) =:= Size) -> Sum is (Size);  Sum is (div(Y+1,Size)).
 
 feeder(X,Goal,Size,Cost_of_N,Results):-collection(X,Size,Product),looping(Product,Goal,Size,Cost_of_N,[],Results).
-looping([],Goal,Size,Cost_of_N,ResultsAcc,Results):-print(ResultsAcc), append([],ResultsAcc,ResultsUnSorted), keysort(ResultsUnSorted, ResultsWithKeys),pairs_values(ResultsWithKeys,Results).
+looping([],Goal,Size,Cost_of_N,ResultsAcc,Results):-print(ResultsAcc), append([],ResultsAcc,ResultsUnSorted), keysort(ResultsUnSorted, Results) .
 looping([X|Xs],Goal,Size,Cost_of_N,ResultsAcc,Results):-print(X),manhattan_distances(X,Goal,Size,0,R),
-                                                        Sum is (R+Cost_of_N),
+                                                        Sum is (R+1+Cost_of_N),
                                                         key_parse(Sum,X,Product),
                                                         append(Product,ResultsAcc,ResultList),
                                                         looping(Xs,Goal,Size,Cost_of_N,ResultList,Results).
@@ -47,12 +47,3 @@ swapped(As,I,J,Cs) :-
    append(BeforeJ,[AtI|PastJ],Cs),
    length(BeforeI,I),
    length(BeforeJ,J).
-
-
-a_star(Init,Goal,Size,[Node|OpenRest],Closed,Soltn):- (Node == Goal)-> (Soltn is Closed);
-                                              member(Node,Closed)->a_star(H,Goal,OpenRest,Closed,Soltn);
-                                              NodeCost_Sum is 1,feeder(Node,Goal,Size, NodeCost_Sum,Results), a_star(H,Goal,Size,NodeCost_Sum,Results,[Node|Closed],Soltn).
-
-a_star(H,Goal,Size,NodeCost,[Node|OpenRest],Closed,Soltn):- (Node == Goal)-> (Soltn is Closed);
-                                              member(Node,Closed)->a_star(H,Goal,OpenRest,Closed,Soltn);
-                                              NodeCost_Sum is (NodeCost+1),feeder(Node,Goal,Size, NodeCost_Sum,Results), a_star(H,Goal,Size,NodeCost_Sum,Results,[Node|Closed],Soltn).

@@ -1,0 +1,3 @@
+probelm(10,548127063).
+probelm(N,X):- number_chars(X,Y), print(Y), number_chars(801234567,Z), print(Z).
+
